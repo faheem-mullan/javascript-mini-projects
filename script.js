@@ -16,6 +16,12 @@ const goldText = document.querySelector("#goldText");
 const monsterStats = document.querySelector("#monsterStats");
 const monsterName = document.querySelector("#monsterName");
 const monsterHealthText = document.querySelector("#monsterHealth");
+const weapons = [
+  { name: 'stick', power: 5 },
+  { name: 'dagger', power: 30 },
+  { name: 'claw hammer', power: 50 },
+  { name: 'sword', power: 100 }
+];
 const monsters = [
   {
     name: "slime",
@@ -33,12 +39,6 @@ const monsters = [
     health: 300
   }
 ]
-const weapons = [
-  { name: 'stick', power: 5 },
-  { name: 'dagger', power: 30 },
-  { name: 'claw hammer', power: 50 },
-  { name: 'sword', power: 100 }
-];
 const locations = [
   {
     name: "town square",
@@ -59,10 +59,16 @@ const locations = [
     text: "You enter the cave. You see some monsters."
   },
   {
-    name:"fight ",
-    "button text":["Attack","Dodge","Run"],
-    "button functions":[Attack,Dodge,GoTown],
-    text:"You are fighting a MONSTER"
+    name: "fight",
+    "button text": ["Attack", "Dodge", "Run"],
+    "button functions": [attack, dodge, goTown],
+    text: "You are fighting a monster."
+  },
+  {
+    name: "kill monster",
+    "button text": ["Go to town square", "Go to town square", "Go to town square"],
+    "button functions": [goTown, goTown, goTown],
+    text: 'The monster screams "Arg!" as it dies. You gain experience points and find gold.'
   }
 ];
 
@@ -72,6 +78,7 @@ button2.onclick = goCave;
 button3.onclick = fightDragon;
 
 function update(location) {
+  monsterStats.style.display = "none";
   button1.innerText = location["button text"][0];
   button2.innerText = location["button text"][1];
   button3.innerText = location["button text"][2];
@@ -91,10 +98,6 @@ function goStore() {
 
 function goCave() {
   update(locations[2]);
-}
-
-function fightDragon() {
-  console.log("Fighting dragon.");
 }
 
 function buyHealth() {
@@ -133,48 +136,62 @@ function sellWeapon() {
     gold += 15;
     goldText.innerText = gold;
     let currentWeapon = inventory.shift();
-
+    text.innerText = "You sold a " + currentWeapon + ".";
+    text.innerText += " In your inventory you have: " + inventory;
+  } else {
+    text.innerText = "Don't sell your only weapon!";
   }
 }
 
 function fightSlime() {
-  fighting=0;
+  fighting = 0;
   goFight();
-
 }
 
 function fightBeast() {
-  fighting=1;
+  fighting = 1;
   goFight();
-
 }
 
-function fightDragon(){
-  fighting=2;
+function fightDragon() {
+  fighting = 2;
   goFight();
-
-}
-function goFight(){
-update(locations[3]);
-monsterHealth= monsters[fighting].health;
-monsterStats.style.display="block";
 }
 
-function attack(){
-  text.innerText="the"+monster[fighting].name+"attacks.";
-  text.innerText="you attack with"+weapons[currentWeaponIndex].name;
-  health-=monsters[fighting].level;
-  monsterHealth -=weapons[currentWeaponIndex].power+Math.floor(Math.random()*xp)+1);
-  healthText.innerText=health;
-  monsterHealth.innerText=monsterHealth;
-  if(health=>0){
+function goFight() {
+  update(locations[3]);
+  monsterHealth = monsters[fighting].health;
+  monsterStats.style.display = "block";
+  monsterName.innerText = monsters[fighting].name;
+  monsterHealthText.innerText = monsterHealth;
+}
+
+function attack() {
+  text.innerText = "The " + monsters[fighting].name + " attacks.";
+  text.innerText += " You attack it with your " + weapons[currentWeaponIndex].name + ".";
+  health -= monsters[fighting].level;
+  monsterHealth -= weapons[currentWeaponIndex].power + Math.floor(Math.random() * xp) + 1;
+  healthText.innerText = health;
+  monsterHealthText.innerText = monsterHealth;
+  if (health <= 0) {
     lose();
-  }else if(monsterHealth<=0){
+  } else if (monsterHealth <= 0) {
     defeatMonster();
   }
-
 }
-function dodge(){
-  text.innertext="You dodge the attack from the "+ monsters[fighting].name;
+
+function dodge() {
+  text.innerText = "You dodge the attack from the " + monsters[fighting].name;
+}
+
+function defeatMonster() {
+  gold += Math.floor(monsters[fighting].level * 6.7);
+  xp += monsters[fighting].level;
+  goldText.innerText = gold;
+  xpText.innerText = xp;
+  update(locations[4]);
+}
+
+function lose() {
 
 }
