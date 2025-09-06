@@ -144,6 +144,9 @@ monsterStats.style.display="block";
 }
 
 function attack(){
+  text.innerText="the"+monster[fighting].name+"attacks.";
+  text.innerText="you attack with"+weapons[currentWeaponIndex].name;
+  health-=monsters[fighting].level;
 
 }
 function dodge(){
