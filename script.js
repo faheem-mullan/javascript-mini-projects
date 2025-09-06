@@ -16,6 +16,23 @@ const goldText = document.querySelector("#goldText");
 const monsterStats = document.querySelector("#monsterStats");
 const monsterName = document.querySelector("#monsterName");
 const monsterHealthText = document.querySelector("#monsterHealth");
+const monsters = [
+  {
+    name: "slime",
+    level: 2,
+    health: 15
+  },
+  {
+    name: "fanged beast",
+    level: 8,
+    health: 60
+  },
+  {
+    name: "dragon",
+    level: 20,
+    health: 300
+  }
+]
 const weapons = [
   { name: 'stick', power: 5 },
   { name: 'dagger', power: 30 },
@@ -147,8 +164,17 @@ function attack(){
   text.innerText="the"+monster[fighting].name+"attacks.";
   text.innerText="you attack with"+weapons[currentWeaponIndex].name;
   health-=monsters[fighting].level;
+  monsterHealth -=weapons[currentWeaponIndex].power+Math.floor(Math.random()*xp)+1);
+  healthText.innerText=health;
+  monsterHealth.innerText=monsterHealth;
+  if(health=>0){
+    lose();
+  }else if(monsterHealth<=0){
+    defeatMonster();
+  }
 
 }
 function dodge(){
+  text.innertext="You dodge the attack from the "+ monsters[fighting].name;
 
 }
