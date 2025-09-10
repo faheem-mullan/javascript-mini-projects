@@ -5,7 +5,8 @@ Each project is contained in its own folder with HTML, CSS, and JS files.
 
 ## 📂 Projects
 - **Pyramid Generator** → A simple tool to generate pyramid patterns with JavaScript.
-- *(More projects coming soon...)*
+- *student grade system*
+- *random background color changer*
 
 ## 🎯 Goals
 - Practice core JavaScript (DOM, events, functions, loops).
